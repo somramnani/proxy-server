@@ -5,19 +5,17 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 
-app.get("/api/*/:authorization", async (req, res) => {
-  const urlLink = req.params[0];
-  const authorization = req.params.authorization;
+app.get("/api/:data", async (req, res) => {
+  console.log(req.headers);
   await axios({
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: authorization,
-    },
     method: "post",
-    url: urlLink,
+    url: "https://api.primitives.xyz/api/interview/searchTokens",
+    data: {
+      query: req.params.data,
+    },
   })
     .then(function (response) {
-      res.send(res.json(response.data));
+      res.send(response.data);
     })
     .catch((err) => {
       console.log("error", err);
@@ -26,10 +24,12 @@ app.get("/api/*/:authorization", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  const hotText = "here";
-  const url = "https://api-proxy-server-steel.vercel.app/api/nft";
+  const hotText = "repo";
+  const url = "https://github.com/somramnani/proxy-server";
   const link = res.send(
-    `Server is running, click ${hotText.link(url)} to view the API`
+    `Server is running, check out the ${hotText.link(
+      url
+    )} to view the documentation`
   );
 });
 
